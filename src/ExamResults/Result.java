@@ -1,5 +1,12 @@
 package ExamResults;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+//import ConnexionTest;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,13 +26,23 @@ import javafx.stage.Stage;
 
 public class Result extends Application {
 	
-	//private int totalGirlFriendCount = 0;
+	private static String url = "jdbc:mysql:// ls-0f19f4268096a452a869b6f8467bc299c51da519.cz6cgwgke8xd.eu-west-3.rds.amazonaws.com:3306/db0073184"; // URL de connexion
+	private static String utilisateur = "user0073184"; // nom d'utilisateur
+	private static String motDePasse = "Yf3IgyBsOPa34WR"; // mot de passe
+	
+	static Connection connexion;
+	static  ResultSet resultSet;
+	 static Statement statement;
+
+	
 	private Label indicateLabel ;
 	private Button validateButton;
 	private Button resetButton;
+	private static Button detailButton;
 	private TextField matriculeInput;
 	private VBox firstNodeParent;
 	private HBox secondNodeParent;
+	private static Label affiche;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -36,55 +53,48 @@ public class Result extends Application {
 	public void start(Stage fenetre1) throws Exception {
 		
 		
-		
+		detailButton = new Button("Details".toUpperCase());
 		 firstNodeParent = new VBox();
 		 secondNodeParent = new HBox();
 		 validateButton = new Button("valider".toUpperCase());
 		 resetButton = new Button("annuler".toUpperCase());
 		 indicateLabel = new Label();
 		 matriculeInput = new TextField();
+		 affiche = new Label();
 		 
 		 
-		 String Fontname = "AvenirNext LT Pro Bold";
-		 Font font = Font.font(Fontname, 14 );
-		 Font font2 = Font.font("Pacifico",FontWeight.BOLD,28);
+		 
+		 secondNodeParent.getChildren().addAll(validateButton,detailButton,resetButton);
+		 secondNodeParent.setId("secondNodeParent");
 		 
 		 
-		 secondNodeParent.setSpacing(25);
-		 secondNodeParent.setPadding(new Insets(10, 0, 0, 0));
-		 secondNodeParent.setAlignment(Pos.CENTER);
-		 secondNodeParent.getChildren().addAll(validateButton,resetButton);
 		 
-		
-		firstNodeParent.setSpacing(10);
-		firstNodeParent.setPadding(new Insets(25));
-		firstNodeParent.setAlignment(Pos.CENTER);
-		firstNodeParent.setBackground(new Background(new BackgroundFill(Color.web("#F0F4F8"), null, null)));
-		firstNodeParent.getChildren().addAll(indicateLabel,matriculeInput,secondNodeParent);
+		firstNodeParent.getChildren().addAll(indicateLabel,matriculeInput,affiche,secondNodeParent);
 		
 		
-		validateButton.setContentDisplay(ContentDisplay.CENTER);
-		validateButton.setAlignment(Pos.CENTER);
-		validateButton.setFont(font);
-		validateButton.setBackground(new Background(new BackgroundFill(Color.web("#E66A6A"), null, null)));
-		validateButton.setTextFill(Color.WHITE);
-		validateButton.setPadding(new Insets(8));
+		validateButton.setOnAction(e->{
+			result(matriculeInput.getText());
+			matriculeInput.clear();
+			
+		});
 		
-		resetButton.setContentDisplay(ContentDisplay.CENTER);
-		resetButton.setAlignment(Pos.CENTER);
-		resetButton.setFont(font);
-		resetButton.setBackground(new Background(new BackgroundFill(Color.web("#E66A6A"), null, null)));
-		resetButton.setTextFill(Color.WHITE);
-		resetButton.setPadding(new Insets(8));
+		
+		resetButton.setOnAction(e->{
+			fenetre1.close();
+		});
+		
+		
 		
 		indicateLabel.setText("Entrez votre matricule svp :");
-		indicateLabel.setFont(font2);
-		indicateLabel.setTextFill(Color.web("#044E54"));
-		indicateLabel.setPadding(new Insets(0, 0, 15, 0));		
+		indicateLabel.setId("indicateLabel");
 		
+		affiche.setId("affiche");
+		 
+			
 		
 				
 		Scene scene = new Scene(firstNodeParent);
+		scene.getStylesheets().add(getClass().getResource("/ressources/css/style.css").toString());
 		
 		fenetre1.setScene(scene);
 		fenetre1.show();
@@ -96,4 +106,57 @@ public class Result extends Application {
 		
 	}
 
+
+public static void result(String matricule) {
+	try {
+		connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
+		if (connexion != null) {
+            System.out.println("Connexion à la base de données db0073184 réussie !");
+             
+				queryResultSet(matricule);
+		
+        } else {
+            System.out.println("Échec de la connexion.");
+        }
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+
+}
+public static void queryResultSet(String matricule) {
+	try {
+	statement = connexion.createStatement();
+    
+	String des;
+    resultSet = statement.executeQuery("SELECT * FROM etudiant WHERE Matriculeetudiant = "+matricule+";");
+	if(resultSet.next()) {
+		String firstName = resultSet.getString("Nometudiant");
+		String lastName = resultSet.getString("Prenometudiant");
+		String birthday = resultSet.getString("DateNaisetudiant");
+		String studentSchool = resultSet.getString("Ecoleetudiant");
+			double studentAverage = resultSet.getDouble("Moyetudiant");
+			String decision = resultSet.getString("Decisionetudiant");
+			String studentMatricule = resultSet.getString("Matriculeetudiant");
+			
+			
+			
+			if(studentMatricule.equals(matricule)  ) {
+				
+				affiche.setTextFill(decision.toLowerCase().equals("Succès".toLowerCase()) ? Color.web("#0be881"):Color.web("#ff3f34"));
+				affiche.setText(decision);
+			}
+			detailButton.setOnAction(e->{
+				String[] data = {firstName,lastName,birthday,studentSchool,studentMatricule};
+				
+			});
+			
+	}
+			
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		
+	}
+	
+}
 }
