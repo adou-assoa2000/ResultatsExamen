@@ -43,6 +43,16 @@ public class Result extends Application {
 	private VBox firstNodeParent;
 	private HBox secondNodeParent;
 	private static Label affiche;
+	private static Label detail;
+	private static Label titre;
+	
+	private static String firstName;
+	private static String lastName;
+	private static String birthday;
+	private static String studentSchool;
+	private static double studentAverage;
+	private static String decision;
+	private static String studentMatricule;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -57,11 +67,12 @@ public class Result extends Application {
 		 firstNodeParent = new VBox();
 		 secondNodeParent = new HBox();
 		 validateButton = new Button("valider".toUpperCase());
-		 resetButton = new Button("annuler".toUpperCase());
+		 resetButton = new Button("fermer".toUpperCase());
 		 indicateLabel = new Label();
 		 matriculeInput = new TextField();
 		 affiche = new Label();
-		 
+		 detail = new Label();
+		 titre = new Label();
 		 
 		 
 		 secondNodeParent.getChildren().addAll(validateButton,detailButton,resetButton);
@@ -69,12 +80,12 @@ public class Result extends Application {
 		 
 		 
 		 
-		firstNodeParent.getChildren().addAll(indicateLabel,matriculeInput,affiche,secondNodeParent);
+		firstNodeParent.getChildren().addAll(indicateLabel,matriculeInput,affiche,titre,detail,secondNodeParent);
 		
 		
 		validateButton.setOnAction(e->{
-			result(matriculeInput.getText());
-			matriculeInput.clear();
+			queryResultSet(matriculeInput.getText());
+			//matriculeInput.clear();
 			
 		});
 		
@@ -83,38 +94,42 @@ public class Result extends Application {
 			fenetre1.close();
 		});
 		
+		detailButton.setOnAction(e->{
+			data(matriculeInput.getText());
+		});
+		
 		
 		
 		indicateLabel.setText("Entrez votre matricule svp :");
 		indicateLabel.setId("indicateLabel");
 		
 		affiche.setId("affiche");
-		 
-			
 		
+		detail.setId("detail");
+		
+		titre.setId("titre");
+		 
 				
-		Scene scene = new Scene(firstNodeParent);
+		Scene scene = new Scene(firstNodeParent,400,600);
 		scene.getStylesheets().add(getClass().getResource("/ressources/css/style.css").toString());
 		
 		fenetre1.setScene(scene);
 		fenetre1.show();
 		fenetre1.setTitle("Consultation de résultat");
 		fenetre1.centerOnScreen();
-		fenetre1.setResizable(false);
+		fenetre1.setResizable(true);
 		
 		
 		
 	}
 
 
-public static void result(String matricule) {
+public static void result() {
 	try {
 		connexion = DriverManager.getConnection(url, utilisateur, motDePasse);
 		if (connexion != null) {
             System.out.println("Connexion à la base de données db0073184 réussie !");
              
-				queryResultSet(matricule);
-		
         } else {
             System.out.println("Échec de la connexion.");
         }
@@ -124,39 +139,55 @@ public static void result(String matricule) {
 
 }
 public static void queryResultSet(String matricule) {
-	try {
-	statement = connexion.createStatement();
-    
-	String des;
-    resultSet = statement.executeQuery("SELECT * FROM etudiant WHERE Matriculeetudiant = "+matricule+";");
-	if(resultSet.next()) {
-		String firstName = resultSet.getString("Nometudiant");
-		String lastName = resultSet.getString("Prenometudiant");
-		String birthday = resultSet.getString("DateNaisetudiant");
-		String studentSchool = resultSet.getString("Ecoleetudiant");
-			double studentAverage = resultSet.getDouble("Moyetudiant");
-			String decision = resultSet.getString("Decisionetudiant");
-			String studentMatricule = resultSet.getString("Matriculeetudiant");
-			
-			
-			
-			if(studentMatricule.equals(matricule)  ) {
-				
-				affiche.setTextFill(decision.toLowerCase().equals("Succès".toLowerCase()) ? Color.web("#0be881"):Color.web("#ff3f34"));
-				affiche.setText(decision);
-			}
-			detailButton.setOnAction(e->{
-				String[] data = {firstName,lastName,birthday,studentSchool,studentMatricule};
-				
-			});
-			
-	}
-			
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		
-	}
+	result();
 	
+	try {
+		statement = connexion.createStatement();
+	    
+	   resultSet = statement.executeQuery("SELECT * FROM etudiant WHERE Matriculeetudiant = "+matricule+";");
+		if(resultSet.next()) {
+			 decision = resultSet.getString("Decisionetudiant");
+			 studentMatricule = resultSet.getString("Matriculeetudiant");
+			 
+			 if(studentMatricule.equals(matricule)  ) {
+					
+					affiche.setTextFill(decision.toLowerCase().equals("Succès".toLowerCase()) ? Color.web("#0be881"):Color.web("#ff3f34"));
+					affiche.setText(decision);
+				}
+						
+		}
+				
+	} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();	
+	}
 }
+
+
+public static void data(String matricule){
+	result();
+	
+	try {
+		statement = connexion.createStatement();
+	    
+	     resultSet = statement.executeQuery("SELECT * FROM etudiant WHERE Matriculeetudiant = "+matricule+";");
+		if(resultSet.next()) {
+			 firstName = resultSet.getString("Nometudiant");
+			 lastName = resultSet.getString("Prenometudiant");
+			 birthday = resultSet.getString("DateNaisetudiant");
+			 studentSchool = resultSet.getString("Ecoleetudiant");
+			 studentAverage = resultSet.getDouble("Moyetudiant");
+			 decision = resultSet.getString("Decisionetudiant");
+			 studentMatricule = resultSet.getString("Matriculeetudiant");	
+		}
+		titre.setText("INFORMATIONS ETUDIANT(E):");
+		detail.setText("NOM & PRENOM: "+firstName+" "+lastName+"\n\n"+"ANNEE DE NAISSANCE: "+birthday+"\n\n"+"ECOLE: "+studentSchool+"\n\n"+"MATRICULE: "+studentMatricule+"\n\n"+"MOYENNE: "+studentAverage);
+		
+				
+	} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace(); 
+			
+		}
+	}
 }

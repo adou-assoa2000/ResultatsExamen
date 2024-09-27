@@ -14,18 +14,40 @@
 	
 }
 .label{
-	-fx-font:28px "Pacifico";
+	-fx-font-family:  "Pacifico";
 	-fx-alignment:center;
+}
+
+#detail{
+	-fx-font: 15px "AvenirNext LT Pro Bold";
+	-fx-text-fill:#0fbcf9;
+	-fx-padding:15px 0 15px 0;
+	
 }
 
 #affiche{
 	-fx-padding: 15px 0 0 0;
+	-fx-font-size:28px;
 }
+
 
 #indicateLabel{
 	-fx-text-fill:#0fbcf9;
 	-fx-padding:0 0 15px 0;
+	-fx-font-size:28px;
 }
+
+#titre{
+	-fx-font: 15px "AvenirNext LT Pro Bold";
+	-fx-text-fill:#0be881;
+	-fx-padding:8px 0 8px 0;
+	-fx-content-display:center;
+	-fx-graphic:url("/ressources/css/user.png");
+	-fx-alignment:left;
+	-fx-spacing:5px
+	
+}
+
 .root{
 	-fx-background-color:#ffffff;
 	-fx-alignment:center;
