@@ -102,7 +102,9 @@ public class Result extends Application {
 		
 		vider.setOnAction(e->{
 			matriculeInput.clear();
+			affiche.setText("");
 		});
+		vider.setId("vider");
 		
 		
 		
@@ -187,7 +189,7 @@ public static void data(String matricule){
 			 decision = resultSet.getString("Decisionetudiant");
 			 studentMatricule = resultSet.getString("Matriculeetudiant");	
 		}
-		detail.setText("NOM & PRENOM: "+firstName+" "+lastName+"\n\n"+"ANNEE DE NAISSANCE: "+birthday+"\n\n"+"ECOLE: "+studentSchool+"\n\n"+"MATRICULE: "+studentMatricule+"\n\n"+"MOYENNE: "+studentAverage);
+		detail.setText("NOM & PRENOM: "+firstName+" "+lastName+"\n"+"ANNEE DE NAISSANCE: "+birthday+"\n"+"ECOLE: "+studentSchool+"\n"+"MATRICULE: "+studentMatricule+"\n"+"MOYENNE: "+studentAverage);
 		
 				
 	} catch (Exception e) {

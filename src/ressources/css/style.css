@@ -30,6 +30,10 @@
 	-fx-font-size:28px;
 }
 
+#vider{
+	/*-fx-padding:15px 0 15px 0;*/
+}
+
 
 #indicateLabel{
 	-fx-text-fill:#0fbcf9;
@@ -41,7 +45,7 @@
 	-fx-text-fill:#0be881;
 	-fx-padding: 8px ;
 	-fx-content-display:center;
-	-fx-graphic:url("../images/user2.png");
+	-fx-graphic:url("../images/user1.png");
 	-fx-background-color:#0fbcf9;
 	-fx-background-radius: 10px;
 	
