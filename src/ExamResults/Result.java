@@ -39,6 +39,7 @@ public class Result extends Application {
 	private Button validateButton;
 	private Button resetButton;
 	private static Button detailButton;
+	private static Button vider;
 	private TextField matriculeInput;
 	private VBox firstNodeParent;
 	private HBox secondNodeParent;
@@ -73,6 +74,8 @@ public class Result extends Application {
 		 affiche = new Label();
 		 detail = new Label();
 		 titre = new Label();
+		 vider = new Button("vider".toUpperCase());
+		 //vider.setPadding(new Insets(10,0,0,0));
 		 
 		 
 		 secondNodeParent.getChildren().addAll(validateButton,detailButton,resetButton);
@@ -80,12 +83,11 @@ public class Result extends Application {
 		 
 		 
 		 
-		firstNodeParent.getChildren().addAll(indicateLabel,matriculeInput,affiche,titre,detail,secondNodeParent);
+		firstNodeParent.getChildren().addAll(indicateLabel,matriculeInput,vider,affiche,titre,detail,secondNodeParent);
 		
 		
 		validateButton.setOnAction(e->{
 			queryResultSet(matriculeInput.getText());
-			//matriculeInput.clear();
 			
 		});
 		
@@ -97,6 +99,11 @@ public class Result extends Application {
 		detailButton.setOnAction(e->{
 			data(matriculeInput.getText());
 		});
+		
+		vider.setOnAction(e->{
+			matriculeInput.clear();
+		});
+		
 		
 		
 		
@@ -180,7 +187,6 @@ public static void data(String matricule){
 			 decision = resultSet.getString("Decisionetudiant");
 			 studentMatricule = resultSet.getString("Matriculeetudiant");	
 		}
-		titre.setText("INFORMATIONS ETUDIANT(E):");
 		detail.setText("NOM & PRENOM: "+firstName+" "+lastName+"\n\n"+"ANNEE DE NAISSANCE: "+birthday+"\n\n"+"ECOLE: "+studentSchool+"\n\n"+"MATRICULE: "+studentMatricule+"\n\n"+"MOYENNE: "+studentAverage);
 		
 				
