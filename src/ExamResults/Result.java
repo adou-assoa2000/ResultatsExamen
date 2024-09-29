@@ -8,44 +8,37 @@ import java.sql.Statement;
 
 //import ConnexionTest;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class Result extends Application {
 	
-	private static String url = "jdbc:mysql:// ls-0f19f4268096a452a869b6f8467bc299c51da519.cz6cgwgke8xd.eu-west-3.rds.amazonaws.com:3306/db0073184"; // URL de connexion
-	private static String utilisateur = "user0073184"; // nom d'utilisateur
-	private static String motDePasse = "Yf3IgyBsOPa34WR"; // mot de passe
+	 static String url = "jdbc:mysql:// ls-0f19f4268096a452a869b6f8467bc299c51da519.cz6cgwgke8xd.eu-west-3.rds.amazonaws.com:3306/db0073184"; // URL de connexion
+	static String utilisateur = "user0073184"; // nom d'utilisateur
+	 static String motDePasse = "Yf3IgyBsOPa34WR"; // mot de passe
 	
 	static Connection connexion;
 	static  ResultSet resultSet;
 	 static Statement statement;
 
 	
-	private Label indicateLabel ;
-	private Button validateButton;
-	private Button resetButton;
-	private static Button detailButton;
-	private static Button vider;
-	private TextField matriculeInput;
-	private VBox firstNodeParent;
-	private HBox secondNodeParent;
-	private static Label affiche;
-	private static Label detail;
-	private static Label titre;
+	static Label indicateLabel ;
+	static Button validateButton;
+	static Button resetButton;
+	 static Button detailButton;
+	 static Button vider;
+	static TextField matriculeInput;
+	static VBox firstNodeParent;
+	static HBox secondNodeParent;
+	static Label affiche ;
+	 static Label detail;
+	 static Label titre;
 	
 	private static String firstName;
 	private static String lastName;
@@ -75,7 +68,6 @@ public class Result extends Application {
 		 detail = new Label();
 		 titre = new Label();
 		 vider = new Button("vider".toUpperCase());
-		 //vider.setPadding(new Insets(10,0,0,0));
 		 
 		 
 		 secondNodeParent.getChildren().addAll(validateButton,detailButton,resetButton);
