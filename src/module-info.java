@@ -26,4 +26,5 @@ module ExamResults {
 	requires org.junit.vintage.engine;
 	requires java.base;
 	requires java.compiler;
+	requires org.hamcrest.core.deprecated;
 }
