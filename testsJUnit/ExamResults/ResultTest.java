@@ -29,14 +29,14 @@ public class ResultTest {
 
     @Test
     public void testQueryResultSet() throws Exception {
-        String matricule = "12345";
+        String matricule = "15486";
         Result.queryResultSet(matricule);
         assertNull(Result.affiche,()->"affiche doit être  null");
     }
 
     @Test
     public void testData() throws Exception {
-        String matricule = "12345";
+        String matricule = "adf1125";
         Result.data(matricule);
         assertNull(Result.detail,()->"detail doit être  null");
     }
