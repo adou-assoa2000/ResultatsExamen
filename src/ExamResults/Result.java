@@ -102,7 +102,7 @@ public class Result extends Application {
 				
 				affiche.setText("Veillez entrer votre matricule!");
 				affiche.setTextFill(Color.RED);
-			}else if((matriculeInput.getText()).equalsIgnoreCase(studentMatricule) == false){ 
+			}else if((matriculeInput.getText()).equals(studentMatricule) == false){ 
 				
 					affiche.setText("Matricule inconnu!");
 					affiche.setTextFill(Color.RED);
@@ -131,7 +131,7 @@ public class Result extends Application {
 				affiche.setTextFill(Color.RED);
 			}
 			
-			else if((matriculeInput.getText()).equalsIgnoreCase(studentMatricule) == false){ 
+			else if((matriculeInput.getText()).equals(studentMatricule) == false){ 
 				
 				affiche.setText("Matricule inconnu!");
 				affiche.setTextFill(Color.RED);
@@ -159,7 +159,6 @@ public class Result extends Application {
 		
 		//Vider le champs par un clic sur celui-ci
 		matriculeInput.setOnMouseClicked(e->{
-			matriculeInput.clear();
 			affiche.setText("");
 			detail.setText("");
 			
